@@ -6,6 +6,6 @@ public class DebugCube : MonoBehaviour
 {
     void Update()
     {
-        Debug.Log("Cube Position: " + transform.position);
+        // Debug.Log("Cube Position: " + transform.position);
     }
 }
