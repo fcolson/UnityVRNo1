@@ -123,7 +123,7 @@ public class SendGrabData : MonoBehaviour
 
     private SerialPort serialPort;
     private Grabbable _grabbable;
-    private bool _isGrabbed = false;
+    public bool _isGrabbed = false;
 
     private void Awake()
     {
