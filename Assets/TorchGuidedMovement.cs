@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using Oculus.Interaction;
 using System.Collections.Generic;
-using System.CodeDom;
 
 public class TorchGuidedMovement : MonoBehaviour
 {
@@ -34,7 +33,6 @@ public class TorchGuidedMovement : MonoBehaviour
 
     void Update()
     {
-        if (grabData == null) return;
         // Start the stopwatch when the torch is first grabbed
         if (grabData._isGrabbed && !isTimerRunning)
         {
