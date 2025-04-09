@@ -1,7 +1,7 @@
 using System.IO.Ports;
 using UnityEngine;
 
-public class FingerReader : MonoBehaviour
+public class FingerDriver : MonoBehaviour
 {
     public string portName = "COM5";
     public int baudRate = 115200;
@@ -18,6 +18,13 @@ public class FingerReader : MonoBehaviour
     private Transform ring1, ring2, ring3;
     private Transform pinky1, pinky2, pinky3;
     private Transform thumb1, thumb2, thumb3;
+
+    public float IndexCurl { get; private set; }
+    public float MiddleCurl { get; private set; }
+    public float RingCurl { get; private set; }
+    public float PinkyCurl { get; private set; }
+    public float ThumbCurl { get; private set; }
+
 
     void Start()
     {
@@ -92,6 +99,13 @@ public class FingerReader : MonoBehaviour
         float m = Parse("C");
         float r = Parse("D");
         float p = Parse("E");
+
+
+        IndexCurl = i;
+        MiddleCurl = m;
+        RingCurl = r;
+        PinkyCurl = p;
+        ThumbCurl = t;
 
 
         // Index
