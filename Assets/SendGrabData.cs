@@ -118,7 +118,7 @@ using Oculus.Interaction;
 
 public class SendGrabData : MonoBehaviour
 {
-    public string portName = "COM3"; // Set to your ESP32 COM port
+    public string portName = "COM5"; // Set to your ESP32 COM port
     public int baudRate = 9600;
 
     private SerialPort serialPort;

@@ -95,10 +95,16 @@ public class FingerDriver : MonoBehaviour
         try
         {
             string line = serialPort.ReadLine();
-            if (!string.IsNullOrWhiteSpace(line))
+
+            if (!string.IsNullOrWhiteSpace(line) && line.Contains("A") && line.Contains("B") && line.Contains("C"))
             {
                 ApplyFingerRotations(line);
             }
+            else
+            {
+                Debug.LogWarning("[FingerDriver] Ignored invalid line: " + line);
+            }
+
         }
         catch (System.Exception ex)
         {
@@ -161,9 +167,20 @@ public class FingerDriver : MonoBehaviour
 
     }
 
-void OnApplicationQuit()
+    void OnApplicationQuit()
     {
         if (serialPort != null && serialPort.IsOpen)
             serialPort.Close();
     }
+
+
+    public void SendSerial(string message)
+    {
+        if (serialPort != null && serialPort.IsOpen)
+        {
+            serialPort.WriteLine(message);
+            Debug.Log("[FingerDriver] Sent: " + message);
+        }
+    }
+
 }
