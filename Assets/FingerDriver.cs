@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class FingerDriver : MonoBehaviour
 {
+
+    public Transform controllerAnchor;
+
     public string portName = "COM5";
     public int baudRate = 115200;
 
@@ -10,7 +13,11 @@ public class FingerDriver : MonoBehaviour
 
     public OVRCustomSkeleton skeleton;
 
-    public float curlMultiplier = 1.0f; // Adjust this in the Inspector
+    public float tMult = 2.0f; // Adjust this in the Inspector
+    public float iMult = 1.0f; // Adjust this in the Inspector
+    public float mMult = 2.2f; // Adjust this in the Inspector
+    public float rMult = 4.0f; // Adjust this in the Inspector
+    public float pMult = 4.0f; // Adjust this in the Inspector
 
     // Finger joints
     private Transform index1, index2, index3;
@@ -25,6 +32,10 @@ public class FingerDriver : MonoBehaviour
     public float PinkyCurl { get; private set; }
     public float ThumbCurl { get; private set; }
 
+    public Vector3 positionOffset = Vector3.zero; // tweak in Inspector
+    private Vector3 initialPositionOffset;
+    private Quaternion initialRotationOffset;
+
 
     void Start()
     {
@@ -33,6 +44,13 @@ public class FingerDriver : MonoBehaviour
         catch { Debug.LogWarning("Serial failed"); }
 
         AssignBones();
+
+        if (controllerAnchor != null)
+        {
+            // How the glove is rotated relative to the controller at startup
+            initialPositionOffset = Quaternion.Inverse(controllerAnchor.rotation) * (transform.position - controllerAnchor.position);
+            initialRotationOffset = Quaternion.Inverse(controllerAnchor.rotation) * transform.rotation;
+        }
     }
 
     void AssignBones()
@@ -63,8 +81,15 @@ public class FingerDriver : MonoBehaviour
         thumb3 = skeleton.Bones[(int)OVRSkeleton.BoneId.Hand_Thumb3].Transform;
     }
 
-    void Update()
+    void LateUpdate()
     {
+        if (controllerAnchor != null)
+        {
+            transform.position = controllerAnchor.position
+                + controllerAnchor.rotation * (initialPositionOffset + positionOffset);
+            transform.rotation = controllerAnchor.rotation * initialRotationOffset;
+        }
+
         if (serialPort == null || !serialPort.IsOpen) return;
 
         try
@@ -109,29 +134,29 @@ public class FingerDriver : MonoBehaviour
 
 
         // Index
-        index1.localRotation = Quaternion.Euler(0, 0, -i* 60f * curlMultiplier);
-        index2.localRotation = Quaternion.Euler(0, 0, -i* 70f * curlMultiplier);
-        index3.localRotation = Quaternion.Euler(0, 0, -i* 45f * curlMultiplier);
+        index1.localRotation = Quaternion.Euler(0, 0, -i* 60f * iMult);
+        index2.localRotation = Quaternion.Euler(0, 0, -i* 70f * iMult);
+        index3.localRotation = Quaternion.Euler(0, 0, -i* 45f * iMult);
 
         // Middle
-        middle1.localRotation = Quaternion.Euler(0, 0, -m* 60f * curlMultiplier);
-        middle2.localRotation = Quaternion.Euler(0, 0, -m* 70f * curlMultiplier);
-        middle3.localRotation = Quaternion.Euler(0, 0, -m* 45f * curlMultiplier);
+        middle1.localRotation = Quaternion.Euler(0, 0, -m* 60f * mMult);
+        middle2.localRotation = Quaternion.Euler(0, 0, -m* 70f * mMult);
+        middle3.localRotation = Quaternion.Euler(0, 0, -m* 45f * mMult);
 
         // Ring
-        ring1.localRotation = Quaternion.Euler(0, 0, -r* 60f * curlMultiplier);
-        ring2.localRotation = Quaternion.Euler(0, 0, -r* 70f * curlMultiplier);
-        ring3.localRotation = Quaternion.Euler(0, 0, -r* 45f * curlMultiplier);
+        ring1.localRotation = Quaternion.Euler(0, 0, -r* 60f * rMult);
+        ring2.localRotation = Quaternion.Euler(0, 0, -r* 70f * rMult);
+        ring3.localRotation = Quaternion.Euler(0, 0, -r* 45f * rMult);
 
         // Pinky
-        pinky1.localRotation = Quaternion.Euler(0, 0, p* 60f * curlMultiplier);
-        pinky2.localRotation = Quaternion.Euler(0, 0, p* 70f * curlMultiplier);
-        pinky3.localRotation = Quaternion.Euler(0, 0, p* 45f * curlMultiplier);
+        pinky1.localRotation = Quaternion.Euler(0, 0, -p* 60f * pMult);
+        pinky2.localRotation = Quaternion.Euler(0, 0, -p* 70f * pMult);
+        pinky3.localRotation = Quaternion.Euler(0, 0, -p * 45f * pMult);
 
         // Thumb
-        thumb1.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* curlMultiplier);
-        thumb2.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* curlMultiplier);
-        thumb3.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* curlMultiplier);
+        thumb1.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* tMult);
+        thumb2.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* tMult);
+        thumb3.localRotation = Quaternion.Euler(0, 0, -t* 40f *2* tMult);
 
 
     }

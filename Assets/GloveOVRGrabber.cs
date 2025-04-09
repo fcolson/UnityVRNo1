@@ -7,8 +7,15 @@ public class GloveOVRGrabber : OVRGrabber
     public float grabThreshold = 0.5f;
     public float releaseThreshold = 0.4f;
 
+    private bool isGrabbing = false;
+
     public override void Update()
     {
+        if (m_grabbedObj != null)
+        {
+            Debug.Log($"[GloveOVRGrabber] Currently holding: {m_grabbedObj.name}");
+        }
+
 
         if (m_grabCandidates.Count > 0)
         {
@@ -24,27 +31,48 @@ public class GloveOVRGrabber : OVRGrabber
 
 
 
-        float indexCurl = fingerDriver != null ? fingerDriver.ThumbCurl : 0f;
-        float middleCurl = fingerDriver != null ? fingerDriver.MiddleCurl : 0f;
+        float thumbCurl = fingerDriver != null ? fingerDriver.ThumbCurl : 0f;
+        float ringCurl = fingerDriver != null ? fingerDriver.RingCurl : 0f;
 
-        Debug.Log($"[GloveOVRGrabber] Index: {indexCurl:F2}, Middle: {middleCurl:F2}");
+        float gloveGrabValue = Mathf.Min(thumbCurl, ringCurl);
+        Debug.Log($"[GloveOVRGrabber] Thumb: {thumbCurl:F2}, Ring: {ringCurl:F2}");
+        Debug.Log($"[GloveOVRGrabber] Grip Strength: {gloveGrabValue:F2}");
 
-        float gloveGrabValue = Mathf.Max(indexCurl, middleCurl);
-        float prevValue = m_prevFlex;
-        m_prevFlex = gloveGrabValue;
+        bool shouldGrab = gloveGrabValue > grabThreshold;
+        bool shouldRelease = gloveGrabValue < releaseThreshold;
 
-        if ((m_prevFlex >= grabThreshold) && (prevValue < grabThreshold))
+
+        if (!isGrabbing && shouldGrab && m_grabCandidates.Count > 0)
         {
-            Debug.Log("[GloveOVRGrabber] Attempting to Grab...");
             GrabBegin();
-            Debug.Log("grab_start");
+            isGrabbing = true;
+            Debug.Log("[GloveOVRGrabber] Grab started");
+
+            if (m_grabbedObj != null)
+            {
+                var visualSwap = m_grabbedObj.GetComponent<VisualGrabSwap>();
+                if (visualSwap != null) visualSwap.OnGrab();
+            }
         }
-        else if ((m_prevFlex <= releaseThreshold) && (prevValue > releaseThreshold))
+        else if (isGrabbing && shouldRelease)
         {
             Debug.Log("[GloveOVRGrabber] Releasing...");
+
+            var releasedObj = m_grabbedObj;  //  cache it before clearing
             GrabEnd();
+            isGrabbing = false;
+
+            if (releasedObj != null)
+            {
+                var visualSwap = releasedObj.GetComponent<VisualGrabSwap>();
+                if (visualSwap != null) visualSwap.OnRelease();
+            }
+
             Debug.Log("grab_end");
         }
+
+
+
 
         /*
         if (m_grabbedObj == null && m_grabCandidates.Count > 0)
