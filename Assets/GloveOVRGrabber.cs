@@ -8,7 +8,8 @@ public class GloveOVRGrabber : OVRGrabber
     public float grabThreshold = 0.5f;
     public float releaseThreshold = 0.4f;
 
-    private bool isGrabbing = false;
+    public bool IsGrabbing { get; private set; }
+
 
     protected override void Start()
     {
@@ -19,7 +20,7 @@ public class GloveOVRGrabber : OVRGrabber
     {
         float thumbCurl = fingerDriver != null ? fingerDriver.ThumbCurl : 0f;
         float ringCurl = fingerDriver != null ? fingerDriver.RingCurl : 0f;
-        float gloveGrabValue = Mathf.Min(thumbCurl, ringCurl);
+        float gloveGrabValue = Mathf.Max(thumbCurl, ringCurl);
 
         bool shouldGrab = gloveGrabValue > grabThreshold;
         bool shouldRelease = gloveGrabValue < releaseThreshold;
@@ -27,10 +28,10 @@ public class GloveOVRGrabber : OVRGrabber
         Debug.Log($"[GloveOVRGrabber] ThumbCurl: {thumbCurl:F2}, RingCurl: {ringCurl:F2}, GrabValue: {gloveGrabValue:F2}, ShouldGrab: {shouldGrab}, ShouldRelease: {shouldRelease}");
 
 
-        if (!isGrabbing && shouldGrab && m_grabCandidates.Count > 0)
+        if (!IsGrabbing && shouldGrab && m_grabCandidates.Count > 0)
         {
             GrabBegin();
-            isGrabbing = true;
+            IsGrabbing = true;
 
             if (m_grabbedObj != null)
             {
@@ -41,11 +42,11 @@ public class GloveOVRGrabber : OVRGrabber
             if (fingerDriver != null)
                 fingerDriver.SendSerial("grab_start");
         }
-        else if (isGrabbing && shouldRelease)
+        else if (IsGrabbing && shouldRelease)
         {
             var releasedObj = m_grabbedObj;
             GrabEnd();
-            isGrabbing = false;
+            IsGrabbing = false;
 
             if (releasedObj != null)
             {
