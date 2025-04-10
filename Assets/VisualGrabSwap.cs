@@ -10,6 +10,8 @@ public class VisualGrabSwap : MonoBehaviour
 
     public Transform handAnchor;
 
+    public Vector3 poseHandPositionOffset = Vector3.zero;
+
     public void OnGrab()
     {
         Debug.Log("[VisualGrabSwap] OnGrab triggered");
@@ -34,6 +36,7 @@ public class VisualGrabSwap : MonoBehaviour
 
             // Instantiate the pose hand with the final rotation
             spawnedPoseHand = Instantiate(handGrabbingPosePrefab, handAnchor.position, finalRotation);
+            spawnedPoseHand.transform.localPosition += poseHandPositionOffset;
             spawnedPoseHand.transform.SetParent(handAnchor);
         }
 
