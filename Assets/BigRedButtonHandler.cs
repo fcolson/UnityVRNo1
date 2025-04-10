@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class BigRedButtonHandler : MonoBehaviour
 {
-    // This method will be called when the button is pressed
-    public void ReloadScene()
+
+    private void OnTriggerEnter(Collider other)
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
