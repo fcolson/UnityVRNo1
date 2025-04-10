@@ -19,7 +19,7 @@ public class GloveOVRGrabber : OVRGrabber
     {
         float thumbCurl = fingerDriver != null ? fingerDriver.ThumbCurl : 0f;
         float ringCurl = fingerDriver != null ? fingerDriver.RingCurl : 0f;
-        float gloveGrabValue = Mathf.Min(thumbCurl, ringCurl);
+        float gloveGrabValue = Mathf.Max(thumbCurl, ringCurl);
 
         bool shouldGrab = gloveGrabValue > grabThreshold;
         bool shouldRelease = gloveGrabValue < releaseThreshold;
