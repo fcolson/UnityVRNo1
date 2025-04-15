@@ -917,11 +917,11 @@ MonoBehaviour:
   portName: COM5
   baudRate: 115200
   skeleton: {fileID: 199282749}
-  tMult: 2
-  iMult: 1
-  mMult: 2.6
-  rMult: 4
-  pMult: 4
+  tMult: 9
+  iMult: 10
+  mMult: 10
+  rMult: 10
+  pMult: 10
   positionOffset: {x: -0.2, y: 0, z: -0.13}
 --- !u!114 &199282749
 MonoBehaviour:
@@ -7510,19 +7510,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.12683815
+      value: 0.14323711
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.13192372
+      value: 0.68086165
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70869035
+      value: 0.71825755
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.68137085
+      value: -0.0040909126
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
