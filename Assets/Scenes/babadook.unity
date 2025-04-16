@@ -922,7 +922,7 @@ MonoBehaviour:
   mMult: 10
   rMult: 10
   pMult: 10
-  positionOffset: {x: -0.2, y: 0, z: -0.13}
+  positionOffset: {x: -0.10113715, y: 0.057159238, z: -0.04077945}
 --- !u!114 &199282749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7824,19 +7824,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.14323711
+      value: 0.93431604
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.68086165
+      value: 0.31592336
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.71825755
+      value: 0.08257084
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0040909126
+      value: 0.14292677
       objectReference: {fileID: 0}
     - target: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
