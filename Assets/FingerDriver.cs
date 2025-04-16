@@ -33,6 +33,8 @@ public class FingerDriver : MonoBehaviour
     private Vector3 initialPositionOffset;
     private Quaternion initialRotationOffset;
 
+    public bool simulateInput = true; // Toggle in Inspector
+
     void Start()
     {
         serialPort = new SerialPort(portName, baudRate);
@@ -60,14 +62,9 @@ public class FingerDriver : MonoBehaviour
         AssignBones();
 
         if (!thumb1 || !thumb2 || !thumb3)
-            Debug.LogWarning(" One or more thumb bones were not found.");
+            Debug.LogWarning("One or more thumb bones were not found.");
         else
             Debug.Log("Thumb bones assigned.");
-
-        foreach (var b in skeleton.Bones)
-        {
-            Debug.Log($"Bone ID: {b.Id}, Transform: {b.Transform.name}");
-        }
     }
 
     void AssignBones()
@@ -106,24 +103,32 @@ public class FingerDriver : MonoBehaviour
             transform.rotation = controllerAnchor.rotation * initialRotationOffset;
         }
 
-        if (serialPort == null || !serialPort.IsOpen) return;
-
-        try
+        if (simulateInput)
         {
-            string line = serialPort.ReadLine();
-
-            if (!string.IsNullOrWhiteSpace(line) && line.Contains("A") && line.Contains("B") && line.Contains("C"))
+            string simulatedLine = SimulateSerialFromKeys();
+            if (!string.IsNullOrWhiteSpace(simulatedLine))
             {
-                ApplyFingerRotations(line);
-            }
-            else
-            {
-                Debug.LogWarning("[FingerDriver] Ignored invalid line: " + line);
+                ApplyFingerRotations(simulatedLine);
             }
         }
-        catch (System.Exception ex)
+        else if (serialPort != null && serialPort.IsOpen)
         {
-            Debug.LogWarning("Serial read failed: " + ex.Message);
+            try
+            {
+                string line = serialPort.ReadLine();
+                if (!string.IsNullOrWhiteSpace(line) && line.Contains("A") && line.Contains("B") && line.Contains("C"))
+                {
+                    ApplyFingerRotations(line);
+                }
+                else
+                {
+                    Debug.LogWarning("[FingerDriver] Ignored invalid line: " + line);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning("Serial read failed: " + ex.Message);
+            }
         }
     }
 
@@ -152,30 +157,38 @@ public class FingerDriver : MonoBehaviour
         PinkyCurl = p;
         ThumbCurl = t;
 
-        // Index
         index1.localRotation = Quaternion.Euler(i * 60f * iMult, 0, 0);
         index2.localRotation = Quaternion.Euler(i * 70f * iMult, 0, 0);
         index3.localRotation = Quaternion.Euler(i * 45f * iMult, 0, 0);
 
-        // Middle
         middle1.localRotation = Quaternion.Euler(m * 60f * mMult, 0, 0);
         middle2.localRotation = Quaternion.Euler(m * 70f * mMult, 0, 0);
         middle3.localRotation = Quaternion.Euler(m * 45f * mMult, 0, 0);
 
-        // Ring
         ring1.localRotation = Quaternion.Euler(r * 60f * rMult, 0, 0);
         ring2.localRotation = Quaternion.Euler(r * 70f * rMult, 0, 0);
         ring3.localRotation = Quaternion.Euler(r * 45f * rMult, 0, 0);
 
-        // Pinky
         pinky1.localRotation = Quaternion.Euler(p * 60f * pMult, 0, 0);
         pinky2.localRotation = Quaternion.Euler(p * 70f * pMult, 0, 0);
         pinky3.localRotation = Quaternion.Euler(p * 45f * pMult, 0, 0);
 
-        // Thumb (rotates downward and slightly inward)
         thumb1.localRotation = Quaternion.Euler(t * 50f * tMult, -t * 30f * tMult, 0);
         thumb2.localRotation = Quaternion.Euler(t * 50f * tMult, -t * 10f * tMult, 0);
         thumb3.localRotation = Quaternion.Euler(t * 40f * tMult, 0, 0);
+    }
+
+    private string SimulateSerialFromKeys()
+    {
+        string line = "";
+
+        line += Input.GetKey(KeyCode.Alpha1) ? "A4095" : "A0";
+        line += Input.GetKey(KeyCode.Alpha2) ? "B4095" : "B0";
+        line += Input.GetKey(KeyCode.Alpha3) ? "C4095" : "C0";
+        line += Input.GetKey(KeyCode.Alpha4) ? "D4095" : "D0";
+        line += Input.GetKey(KeyCode.Alpha5) ? "E4095" : "E0";
+
+        return line;
     }
 
     void OnApplicationQuit()
