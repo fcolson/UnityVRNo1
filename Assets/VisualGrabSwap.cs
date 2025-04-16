@@ -2,92 +2,75 @@ using UnityEngine;
 
 public class VisualGrabSwap : MonoBehaviour
 {
-    public GameObject visualObjectToHide; // e.g. the mesh/renderer object
-    public GameObject handGrabbingPosePrefab; // drag your FBX prefab here
-    private GameObject spawnedPoseHand; // internal instance
+    public GameObject visualObjectToHide;
+    public GameObject handGrabbingPosePrefab;
+    private GameObject spawnedPoseHand;
 
-    public GameObject animatedHand;       // the normal glove model
+    public GameObject animatedHand;
 
-    public Transform handAnchor;
+    public Transform handAnchor; //  Assign RightHandAnchor here in Inspector
 
     public Vector3 poseHandPositionOffset = Vector3.zero;
+    public Vector3 poseHandRotationOffset = Vector3.zero;
 
     public void OnGrab()
     {
         Debug.Log("[VisualGrabSwap] OnGrab triggered");
 
-        // Disable mesh renderers of the object to hide
+        // Hide the grabbed object
         if (visualObjectToHide)
         {
             foreach (var renderer in visualObjectToHide.GetComponentsInChildren<Renderer>())
-            {
                 renderer.enabled = false;
-            }
         }
 
-        // Spawn and parent pose hand with adjusted rotation
-        if (handGrabbingPosePrefab && handAnchor)
-        {
-            // Define the additional rotation (e.g., 90 degrees around the Y-axis)
-            Quaternion additionalRotation = Quaternion.Euler(0, -90, 90);
-
-            // Combine the handAnchor's rotation with the additional rotation
-            Quaternion finalRotation = handAnchor.rotation * additionalRotation;
-
-            // Instantiate the pose hand with the final rotation
-            spawnedPoseHand = Instantiate(handGrabbingPosePrefab, handAnchor.position, finalRotation);
-            spawnedPoseHand.transform.localPosition += poseHandPositionOffset;
-            spawnedPoseHand.transform.SetParent(handAnchor);
-        }
-
-        // Disable the animated hand's renderers
+        // Hide the animated hand
         if (animatedHand)
         {
             foreach (var renderer in animatedHand.GetComponentsInChildren<Renderer>())
-            {
                 renderer.enabled = false;
-            }
+        }
+
+        // Spawn pose hand under handAnchor
+        if (handGrabbingPosePrefab && handAnchor)
+        {
+            spawnedPoseHand = Instantiate(handGrabbingPosePrefab);
+
+            // Parent first
+            spawnedPoseHand.transform.SetParent(handAnchor, false);
+
+            // Reset scale and apply offsets
+            spawnedPoseHand.transform.localScale = Vector3.one;
+            spawnedPoseHand.transform.localPosition = poseHandPositionOffset;
+            spawnedPoseHand.transform.localRotation = Quaternion.Euler(poseHandRotationOffset);
         }
     }
-
-
-
 
     public void OnRelease()
     {
         Debug.Log("[VisualGrabSwap] OnRelease triggered");
 
-        // Move the object to the pose hand's current position/rotation
         if (spawnedPoseHand && visualObjectToHide)
         {
             visualObjectToHide.transform.position = spawnedPoseHand.transform.position;
             visualObjectToHide.transform.rotation = spawnedPoseHand.transform.rotation;
         }
 
-        // Re-enable the original object
         if (visualObjectToHide)
         {
             foreach (var renderer in visualObjectToHide.GetComponentsInChildren<Renderer>())
-            {
                 renderer.enabled = true;
-            }
         }
 
-        //  Re-enable animated hand visuals
         if (animatedHand)
         {
             foreach (var renderer in animatedHand.GetComponentsInChildren<Renderer>())
-            {
                 renderer.enabled = true;
-            }
         }
 
-        // Remove pose hand
-        if (spawnedPoseHand) Destroy(spawnedPoseHand);
+        if (spawnedPoseHand)
+        {
+            Destroy(spawnedPoseHand);
+        }
     }
-
-
-
-
-
 }

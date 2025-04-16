@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: hold_ball
       objectReference: {fileID: 0}
+    - target: {fileID: 7818763450247926409, guid: dcd289648467b164c965a7ea6835e3f2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -8700617353114198275, guid: dcd289648467b164c965a7ea6835e3f2, type: 3}
