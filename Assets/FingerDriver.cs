@@ -43,6 +43,8 @@ public class FingerDriver : MonoBehaviour
         try { serialPort.Open(); Debug.Log("Serial opened"); }
         catch { Debug.LogWarning("Serial failed"); }
 
+        SendSerial("grab_end");
+
         StartCoroutine(WaitForBones());
 
         if (controllerAnchor != null)

@@ -2644,8 +2644,8 @@ MonoBehaviour:
   m_parentTransform: {fileID: 900954843}
   m_player: {fileID: 0}
   fingerDriver: {fileID: 447513166}
-  grabThreshold: 0.2
-  releaseThreshold: 0.1
+  grabThreshold: 0.15
+  releaseThreshold: 0.06
 --- !u!114 &447513166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2662,12 +2662,12 @@ MonoBehaviour:
   portName: COM5
   baudRate: 115200
   skeleton: {fileID: 447513169}
-  tMult: 1
-  iMult: 1
-  mMult: 1
-  rMult: 1
-  pMult: 1
-  positionOffset: {x: 0.032899976, y: 0.07079999, z: -0.031000018}
+  tMult: 10
+  iMult: 2.5
+  mMult: 2
+  rMult: 3
+  pMult: 10
+  positionOffset: {x: -0.030000016, y: 0.062800065, z: -0.06089993}
   simulateInput: 0
 --- !u!114 &447513167
 MonoBehaviour:
@@ -3861,7 +3861,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.026
+  m_Radius: 0.17
   m_Height: 0.14
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}

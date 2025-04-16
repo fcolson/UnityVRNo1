@@ -74,6 +74,8 @@ public class AndroidVideoEditorUtil
         properties.SetProperty(AndroidXPropertyName, AndroidXPropertyValue);
         properties.Save();
 
+
+        /*
         // Set the target sdk version to the required minimum for the NativeVideoPlayer plugin
         var currentTargetSDK = PlayerSettings.Android.targetSdkVersion;
         if (currentTargetSDK == 0)
@@ -107,6 +109,8 @@ public class AndroidVideoEditorUtil
             PlayerSettings.Android.targetSdkVersion = MinimumTargetAndroidSdkVersion;
             Debug.Log($"Update settings to match minimum android target API level to {MinimumTargetAndroidSdkVersion}");
         }
+
+        */
     }
 
     [MenuItem("Meta/Samples/Video/Disable Native Android Video Player")]
