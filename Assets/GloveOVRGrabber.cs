@@ -58,6 +58,7 @@ public class GloveOVRGrabber : OVRGrabber
                 fingerDriver.SendSerial("grab_end");
         }
 
-        base.Update();
+        // base.Update();
     }
+
 }
