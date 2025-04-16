@@ -13,9 +13,12 @@ public class VisualGrabSwap : MonoBehaviour
     public Vector3 poseHandPositionOffset = Vector3.zero;
     public Vector3 poseHandRotationOffset = Vector3.zero;
 
+
+
     public void OnGrab()
     {
-        Debug.Log("[VisualGrabSwap] OnGrab triggered");
+
+        // Debug.Log("[DEBUG] Grabbed: " + gameObject.name); //  this object is being grabbed
 
         // Hide the grabbed object
         if (visualObjectToHide)

@@ -37,6 +37,8 @@ public class FingerDriver : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("[FingerDriver] Start() running");
+
         serialPort = new SerialPort(portName, baudRate);
         try { serialPort.Open(); Debug.Log("Serial opened"); }
         catch { Debug.LogWarning("Serial failed"); }

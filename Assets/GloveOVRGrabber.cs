@@ -25,7 +25,7 @@ public class GloveOVRGrabber : OVRGrabber
         bool shouldGrab = gloveGrabValue > grabThreshold;
         bool shouldRelease = gloveGrabValue < releaseThreshold;
 
-        Debug.Log($"[GloveOVRGrabber] ThumbCurl: {thumbCurl:F2}, RingCurl: {ringCurl:F2}, GrabValue: {gloveGrabValue:F2}, ShouldGrab: {shouldGrab}, ShouldRelease: {shouldRelease}");
+        // Debug.Log($"[GloveOVRGrabber] ThumbCurl: {thumbCurl:F2}, RingCurl: {ringCurl:F2}, GrabValue: {gloveGrabValue:F2}, ShouldGrab: {shouldGrab}, ShouldRelease: {shouldRelease}");
 
 
         if (!IsGrabbing && shouldGrab && m_grabCandidates.Count > 0)
